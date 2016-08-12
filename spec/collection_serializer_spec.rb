@@ -5,7 +5,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
 
   it_should_behave_like 'object that can access config'
 
-  describe '#as_json' do
+  describe '#as_main_json' do
     class DummyWorkSerializer
       include PragmaticSerializer::Prefixes
       include PragmaticSerializer::GeneralInitialization
@@ -17,25 +17,43 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
 
     let(:work1) { double }
     let(:work2) { double }
+    let(:result) { subject.as_main_json }
 
     before do
       subject.resource_serializer = DummyWorkSerializer
       subject.resources = [work1, work2]
     end
 
-    it do
-      expect(subject.as_json).to match({
-        dummy_works: [
-          be_kind_of(Hash),
-          be_kind_of(Hash)
-        ],
-        limit: 10,
-        offset: 0,
-        #first: '/api/v1/works?limit=10&offset=0',
-        #prev: '/api/v1/works?limit=10&offset=0',
-        #next: '/api/v1/works?limit=10&offset=2',
-        #href: '/api/v1/works?limit=10&offset=1',
-      })
+    context 'given no pagination evaluator' do
+      it do
+        expect(result).to match({
+          dummy_works: [
+            be_kind_of(Hash),
+            be_kind_of(Hash)
+          ]
+        })
+      end
+    end
+
+    context 'when pagination evaluator' do
+      before do
+        subject.pagination_evaluator = ->(limit, offset) { "/api/v7/dummy_works?limit=#{limit}&offset=#{offset}" }
+      end
+
+      it do
+        expect(result).to match({
+          dummy_works: [
+            be_kind_of(Hash),
+            be_kind_of(Hash)
+          ],
+          limit: 10,
+          offset: 0,
+          #first: '/api/v1/works?limit=10&offset=0',
+          #prev: '/api/v1/works?limit=10&offset=0',
+          #next: '/api/v1/works?limit=10&offset=2',
+          #href: '/api/v1/works?limit=10&offset=1',
+        })
+      end
     end
   end
 

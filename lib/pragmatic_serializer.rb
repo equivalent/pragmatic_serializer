@@ -12,8 +12,8 @@ require "pragmatic_serializer/general_resource_json"
 
 require "pragmatic_serializer/all"
 
+require "pragmatic_serializer/pagination_json"
 require "pragmatic_serializer/collection_serializer"
-
 
 
 module PragmaticSerializer
