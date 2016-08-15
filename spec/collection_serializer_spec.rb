@@ -5,7 +5,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
 
   it_should_behave_like 'object that can access config'
 
-  describe '#as_main_json' do
+  describe '' do
     class DummyWorkSerializer
       include PragmaticSerializer::Prefixes
       include PragmaticSerializer::GeneralInitialization
@@ -17,7 +17,8 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
 
     let(:work1) { double }
     let(:work2) { double }
-    let(:result) { subject.as_main_json }
+    let(:prefixed_result) { subject.as_main_json }
+    let(:unprefixed_result) { subject.as_unprefixed_json }
 
     before do
       subject.resource_serializer = DummyWorkSerializer
@@ -25,13 +26,24 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
     end
 
     context 'given no pagination evaluator' do
-      it do
-        expect(result).to match({
-          dummy_works: [
+      describe '#as_main_json' do
+        it do
+          expect(prefixed_result).to match({
+            dummy_works: [
+              be_kind_of(Hash),
+              be_kind_of(Hash)
+            ]
+          })
+        end
+      end
+
+      describe '#as_unprefixed_json' do
+        it do
+          expect(unprefixed_result).to match([
             be_kind_of(Hash),
             be_kind_of(Hash)
-          ]
-        })
+          ])
+        end
       end
     end
 
@@ -41,7 +53,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
       end
 
       it do
-        expect(result).to match({
+        expect(prefixed_result).to match({
           dummy_works: [
             be_kind_of(Hash),
             be_kind_of(Hash)
@@ -88,70 +100,4 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
       end
     end
   end
-
-  #default_collection_serialization_method
-
-  #xit do
-    ## WorkSerializer.new(ttete.).as_jsos
-
-    #wcs = WorkSerializer.collection
-
-    #wcs.limit  # => 10
-    #wcs.offset # => 0
-    #wcs.collection = Work.where(somehing: true).limit(wcs.limit).offset(wcs.offset)
-
-
-    #wcs.resource_serializer #=> WorkSerializer
-    #wcs.serialization_method #=> as_unprefixed_json
-
-    ##wcs.collection = WorkCollectionPolicy
-    ##                   .new(current_user)
-    ##                   .allowed_to_be_publicly_displayed( Work.where(somehing: true).limit(wcs.limit).offset(wcs.offset) )
-
-    #wcs.as_json
-    #{
-      #works: [
-        #{
-          #id: "urlslg",
-          #type: 'work',
-          #href: '/api/v1/works/urlslg',
-          #title: 'fooo',
-          #media: []
-        #}
-      #],
-      #limit: 10,
-      #offset: 0,
-      #first: '/api/v1/works?limit=10&offset=0',
-      #prev: nil,
-      #next: '/api/v1/works?limit=10&offset=1',
-      #href: '/api/v1/works?limit=10&offset=1',
-    #}
-
-
-
-
-    #wcs.limit  = params[:limit] # => 10
-    #wcs.offest = params[:offset] # => 1
-    #wcs.collection = Work.where(somehing: true).limit(wcs.limit).offset(wcs.offset)
-
-
-    #wcs.as_json
-    #{
-      #works: [
-        #{
-          #id: "urlslg",
-          #type: 'work',
-          #href: nil,
-          #title: 'fooo',
-          #media: []
-        #}
-      #],
-      #limit: 10,
-      #offset: 0,
-      #first: '/api/v1/works?limit=10&offset=0',
-      #prev: '/api/v1/works?limit=10&offset=0',
-      #next: '/api/v1/works?limit=10&offset=2',
-      #href: '/api/v1/works?limit=10&offset=1',
-    #}
-  #end
 end

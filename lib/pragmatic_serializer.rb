@@ -10,11 +10,11 @@ require "pragmatic_serializer/general_initialization"
 require "pragmatic_serializer/general_base_json"
 require "pragmatic_serializer/general_resource_json"
 
-require "pragmatic_serializer/all"
-
 require "pragmatic_serializer/pagination_json"
 require "pragmatic_serializer/collection_serializer"
+require "pragmatic_serializer/collection_interface"
 
+require "pragmatic_serializer/all"
 
 module PragmaticSerializer
   def self.config

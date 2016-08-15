@@ -1,10 +1,5 @@
 require 'spec_helper'
 
-class DummyWork
-  attr_accessor :public_uid
-  attr_accessor :title
-end
-
 module API
   module V66
     class DummyWorkSerializer

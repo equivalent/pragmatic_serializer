@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 RSpec.describe PragmaticSerializer::PaginationJSON do
   RSpec.shared_examples 'pagination json that has first element' do
     describe '#first' do
