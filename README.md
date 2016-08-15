@@ -1,8 +1,27 @@
 # PragmaticSerializer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pragmatic_serializer`. To experiment with that code, run `bin/console` for an interactive prompt.
+Pragmatic Serializer for Ruby & Ruby on Rails JSON API.
 
-TODO: Delete this and the text above, and describe your gem
+
+## About
+
+Although we agre that [JSON API standard proposal](http://jsonapi.org/)
+is great, it may be overkill to implement some of it's features (like the way nesting is done) for smaller
+API Endpoints.
+
+Therefore if you feel that implementing
+[Active Model Serializer](https://github.com/rails-api/active_model_serializers) (JSON API Rails gem)
+is not the best choice for your situation/app this gem may be useful for you
+too.
+
+We were heavily inspired by [Stormpath API talk on JSON API](https://www.youtube.com/watch?v=hdSrT4yjS1g)
+and the pragmatic way they solve some common issues.
+
+Also the gem don't extend anything Rails wise (therefore Sinatra can use
+it too), it just provides a generic
+way to build Plain Ruby Object Serializers that you can call `as_json`
+on to produce hash that you can then pass to `render json:
+DocumentSerializer.new(document: Document.last).as_json`
 
 ## Installation
 
@@ -22,7 +41,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+
+```
+
+
+
+#### Change ID field
+
+by default the ID field is models `#id`. To change it
+
+```
+# config/initializers/pragmatic_serializer.rb
+
+PragmaticSerializer.config.default_id_source = :public_uid  # if you using https://github.com/equivalent/public_uid
+
+# ..or
+PragmaticSerializer.config.default_id_source = :url_slug    # custom field
+```
+
 
 ## Development
 
