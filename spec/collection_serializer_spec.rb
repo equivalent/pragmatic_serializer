@@ -17,7 +17,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
 
     let(:work1) { double }
     let(:work2) { double }
-    let(:prefixed_result) { subject.as_main_json }
+    let(:prefixed_result)   { subject.as_main_json }
     let(:unprefixed_result) { subject.as_unprefixed_json }
 
     before do
@@ -52,19 +52,30 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
         subject.pagination_evaluator = ->(limit:, offset:) { "/api/v7/dummy_works?limit=#{limit}&offset=#{offset}" }
       end
 
-      it do
-        expect(prefixed_result).to match({
-          dummy_works: [
+      describe '#as_main_json' do
+        it do
+          expect(prefixed_result).to match({
+            dummy_works: [
+              be_kind_of(Hash),
+              be_kind_of(Hash)
+            ],
+            limit: subject.limit,
+            offset: 0,
+            first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+            prev: nil,
+            next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=1",
+            href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+          })
+        end
+      end
+
+      describe '#as_unprefixed_json' do
+        it do
+          expect(unprefixed_result).to match([
             be_kind_of(Hash),
             be_kind_of(Hash)
-          ],
-          limit: subject.limit,
-          offset: 0,
-          first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
-          prev: nil,
-          next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=1",
-          href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
-        })
+          ])
+        end
       end
     end
   end

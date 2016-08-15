@@ -54,37 +54,62 @@ RSpec.describe API::V67::DummyWorkSerializer do
       subject.offset = 3
     end
 
-    it do
-      expect(subject.as_main_json).to match({
-        dummy_works: [
+    describe '#as_main_json' do
+      it do
+        expect(subject.as_main_json).to match({
+          dummy_works: [
+            {
+              id: "atreyu123",
+              type: "dummy_work",
+              href: "/api/v67/dummy_works/atreyu123",
+              title: "Halestorm"
+            }
+          ],
+          first:  "/api/v67/dummy_works?limit=10&offset=0",
+          href:   "/api/v67/dummy_works?limit=10&offset=3",
+          prev:   "/api/v67/dummy_works?limit=10&offset=2",
+          next:   "/api/v67/dummy_works?limit=10&offset=4",
+          limit:  10,
+          offset: 3,
+        })
+      end
+    end
+
+    describe '#as_unprefixed_json' do
+      it do 
+        expect(subject.as_unprefixed_json).to match([
           {
             id: "atreyu123",
             type: "dummy_work",
             href: "/api/v67/dummy_works/atreyu123",
             title: "Halestorm"
           }
-        ],
-        first:  "/api/v67/dummy_works?limit=10&offset=0",
-        href:   "/api/v67/dummy_works?limit=10&offset=3",
-        prev:   "/api/v67/dummy_works?limit=10&offset=2",
-        next:   "/api/v67/dummy_works?limit=10&offset=4",
-        limit:  10,
-        offset: 3,
-      })
+        ])
+      end
     end
   end
-
 
   context 'specify different serialization_method' do
     before do
       subject.serialization_method = :as_foo_json
     end
-    it do
-      expect(subject.as_main_json).to match({
-        dummy_works: [
+
+    describe '#as_main_json' do
+      it do
+        expect(subject.as_main_json).to match({
+          dummy_works: [
+            { bmth: "It Never Ends"}
+          ]
+        })
+      end
+    end
+
+    describe '#as_unprefixed_json' do
+      it do
+        expect(subject.as_unprefixed_json).to match([
           { bmth: "It Never Ends"}
-        ]
-      })
+        ])
+      end
     end
   end
 end
