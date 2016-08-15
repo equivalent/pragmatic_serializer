@@ -83,7 +83,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
   describe '#serialization_method' do
     it_behaves_like 'accessor that default values to config',
       method_name: :serialization_method,
-      default_method_name: :default_collection_serialization_method,
+      default_method_name: :default_resource_serialization_method,
       set_to: :foo_bar,
       type_safety_klass: Symbol
   end

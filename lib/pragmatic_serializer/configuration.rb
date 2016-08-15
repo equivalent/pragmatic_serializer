@@ -18,7 +18,7 @@ module PragmaticSerializer
       @default_id_source ||= :id
     end
 
-    def default_collection_serialization_method
+    def default_resource_serialization_method
       :as_unprefixed_json
     end
   end

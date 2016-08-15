@@ -36,9 +36,9 @@ RSpec.describe PragmaticSerializer::Configuration do
     end
   end
 
-  describe '#default_collection_serialization_method' do
+  describe '#default_resource_serialization_method' do
     it do
-      expect(subject.default_collection_serialization_method).to eq :as_unprefixed_json
+      expect(subject.default_resource_serialization_method).to eq :as_unprefixed_json
     end
   end
 end

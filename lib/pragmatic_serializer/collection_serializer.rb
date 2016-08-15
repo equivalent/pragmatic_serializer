@@ -9,7 +9,7 @@ module PragmaticSerializer
     attr_accessor :resources, :resource_serializer, :pagination_evaluator
 
     def serialization_method
-      @serialization_method ||= config.default_collection_serialization_method
+      @serialization_method ||= config.default_resource_serialization_method
     end
 
     def limit
