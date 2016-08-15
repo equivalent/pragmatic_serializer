@@ -24,9 +24,9 @@ end
 RSpec.describe GeneralResourceJSONSerializer do
   subject { described_class.new }
 
-  describe '#as_main_json' do
+  describe '#as_json' do
     it do
-      expect(subject.as_main_json).to match({
+      expect(subject.as_json).to match({
         document: {
           :id=>"bmth",
           :type=>"document",
@@ -47,9 +47,9 @@ RSpec.describe GeneralResourceJSONSerializer do
     end
   end
 
-  describe '#as_unprefixed_main_json' do
+  describe '#as_unprefixed_json' do
     it do
-      expect(subject.as_unprefixed_main_json).to match({
+      expect(subject.as_unprefixed_json).to match({
         id:"bmth",
         type:"document",
         title: 'Oli S. Sky'

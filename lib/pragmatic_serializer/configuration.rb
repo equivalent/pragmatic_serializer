@@ -19,7 +19,7 @@ module PragmaticSerializer
     end
 
     def default_collection_serialization_method
-      :as_unprefixed_main_json
+      :as_unprefixed_json
     end
   end
 end

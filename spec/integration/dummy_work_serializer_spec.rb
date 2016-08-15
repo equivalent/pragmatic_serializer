@@ -30,9 +30,9 @@ RSpec.describe API::V66::DummyWorkSerializer do
 
   it_should_behave_like 'object that can access config'
 
-  describe "#as_main_json" do
+  describe "#as_json" do
     it do
-      expect(subject.as_main_json).to match({
+      expect(subject.as_json).to match({
         dummy_work: {
           id: "1235",
           type: "dummy_work",
@@ -55,9 +55,9 @@ RSpec.describe API::V66::DummyWorkSerializer do
     end
   end
 
-  describe "#as_unprefixed_main_json" do
+  describe "#as_unprefixed_json" do
     it do
-      expect(subject.as_unprefixed_main_json).to match({
+      expect(subject.as_unprefixed_json).to match({
         id: "1235",
         type: "dummy_work",
         href: "/api/v66/dummy_works/1235",

@@ -22,7 +22,7 @@ module PragmaticSerializer
       @offset ||= config.default_offset
     end
 
-    def as_main_json
+    def as_json
       hash = { collection_prefix => as_unprefixed_json }
       hash.merge!(pagination_json.as_json) if pagination_evaluator
       hash

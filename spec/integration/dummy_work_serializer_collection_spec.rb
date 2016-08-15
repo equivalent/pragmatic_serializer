@@ -34,7 +34,7 @@ RSpec.describe API::V67::DummyWorkSerializer do
 
   context 'no pagination' do
     it do
-      expect(subject.as_main_json).to match({
+      expect(subject.as_json).to match({
         dummy_works: [
           {
             id: "atreyu123",
@@ -54,9 +54,9 @@ RSpec.describe API::V67::DummyWorkSerializer do
       subject.offset = 3
     end
 
-    describe '#as_main_json' do
+    describe '#as_json' do
       it do
-        expect(subject.as_main_json).to match({
+        expect(subject.as_json).to match({
           dummy_works: [
             {
               id: "atreyu123",
@@ -94,9 +94,9 @@ RSpec.describe API::V67::DummyWorkSerializer do
       subject.serialization_method = :as_foo_json
     end
 
-    describe '#as_main_json' do
+    describe '#as_json' do
       it do
-        expect(subject.as_main_json).to match({
+        expect(subject.as_json).to match({
           dummy_works: [
             { bmth: "It Never Ends"}
           ]
