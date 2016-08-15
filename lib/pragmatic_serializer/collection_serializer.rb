@@ -26,7 +26,7 @@ module PragmaticSerializer
       hash = {
         collection_prefix => collection_serializers.map(&:as_unprefixed_main_json),
       }
-      hash.merge!(pagination_json) if pagination_evaluator
+      hash.merge!(pagination_json.as_json) if pagination_evaluator
       hash
     end
 
@@ -40,12 +40,11 @@ module PragmaticSerializer
       end
 
       def pagination_json
-        PragmaticSerializer::PaginationJSON.new({
+        @pagination_json ||= PragmaticSerializer::PaginationJSON.new({
           limit: limit,
           offset: offset,
           pagination_evaluator: pagination_evaluator
         })
       end
-
   end
 end

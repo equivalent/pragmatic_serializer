@@ -37,7 +37,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
 
     context 'when pagination evaluator' do
       before do
-        subject.pagination_evaluator = ->(limit, offset) { "/api/v7/dummy_works?limit=#{limit}&offset=#{offset}" }
+        subject.pagination_evaluator = ->(limit:, offset:) { "/api/v7/dummy_works?limit=#{limit}&offset=#{offset}" }
       end
 
       it do
@@ -46,12 +46,12 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
             be_kind_of(Hash),
             be_kind_of(Hash)
           ],
-          limit: 10,
+          limit: subject.limit,
           offset: 0,
-          #first: '/api/v1/works?limit=10&offset=0',
-          #prev: '/api/v1/works?limit=10&offset=0',
-          #next: '/api/v1/works?limit=10&offset=2',
-          #href: '/api/v1/works?limit=10&offset=1',
+          first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+          prev: nil,
+          next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=1",
+          href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
         })
       end
     end
