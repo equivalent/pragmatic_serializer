@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Pobble/pragmatic_serializer.svg?branch=master)](https://travis-ci.org/Pobble/pragmatic_serializer)
+
 # PragmaticSerializer
 
 Pragmatic Serializer for Ruby & Ruby on Rails JSON API.
