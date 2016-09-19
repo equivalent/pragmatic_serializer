@@ -67,7 +67,7 @@ class MySerializer
 
   def main_json
     hash = { title: band.title }
-    hash.margin(view_count: band.view_count) if policy.can_view_counters?
+    hash.merge!(view_count: band.view_count) if policy.can_view_counters?
     hash
   end
 end
@@ -88,14 +88,13 @@ As regular user:
 }
 ```
 
-As admin 
-
+As admin
 
 ```json
 {
   "id":"123",
   "type":"band",
-  "title":"Bring Me The Horizon"
+  "title":"Bring Me The Horizon",
   "view_count": 2001
 }
 ```
