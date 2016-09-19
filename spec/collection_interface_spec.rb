@@ -7,7 +7,8 @@ end
 
 RSpec.describe SerializerWithCollectionInterfaceSerializer do
   describe '.collection' do
-    let(:resources) { [double(public_uid: "askngalxndra")] }
+    let(:resources) { [resource] }
+    let(:resource)  { double(public_uid: "askngalxndra") }
     subject { described_class.collection(resources) }
 
     it do
@@ -20,6 +21,14 @@ RSpec.describe SerializerWithCollectionInterfaceSerializer do
 
     it do
       expect(subject.resources).to eq resources
+    end
+
+    context 'passing resource_options' do
+      subject { described_class.collection(resources, resource_options: { dummy_method: 123 } ) }
+
+      it do
+        expect(subject.send(:resource_options)).to eq({ dummy_method: 123 })
+      end
     end
   end
 end

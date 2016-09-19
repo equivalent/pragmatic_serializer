@@ -10,6 +10,9 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
       include PragmaticSerializer::Prefixes
       include PragmaticSerializer::GeneralInitialization
 
+      def dummy_method(arg)
+      end
+
       def as_unprefixed_json
         { doesnt: :matter } # this is tested elsewhere
       end
@@ -43,6 +46,21 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
             be_kind_of(Hash),
             be_kind_of(Hash)
           ])
+        end
+
+        context 'passing resource_options' do
+          before do
+            subject.resources = [work1]
+            subject.resource_options = { dummy_method: 123 }
+          end
+
+          it do
+            expect_any_instance_of(DummyWorkSerializer)
+              .to receive(:dummy_method)
+              .with(123)
+
+            unprefixed_result
+          end
         end
       end
     end

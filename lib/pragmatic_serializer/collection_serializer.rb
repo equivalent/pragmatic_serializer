@@ -5,7 +5,7 @@ module PragmaticSerializer
     extend Forwardable
     include PragmaticSerializer::ConfigInterface
 
-    attr_writer :limit, :offset, :serialization_method
+    attr_writer :limit, :offset, :serialization_method, :resource_options
     attr_accessor :resources, :resource_serializer, :pagination_evaluator
 
     def serialization_method
@@ -37,7 +37,16 @@ module PragmaticSerializer
 
       def collection_serializers
         resources.map do |resource|
-          resource_serializer.new(resource_prefix => resource)
+          resource_object = resource_serializer.new(resource_prefix => resource)
+
+          resource_options.each do |method_name, value|
+            puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            puts method_name
+            puts value
+            resource_object.send(method_name, value)
+          end
+
+          resource_object
         end
       end
 
@@ -47,6 +56,10 @@ module PragmaticSerializer
           offset: offset,
           pagination_evaluator: pagination_evaluator
         })
+      end
+
+      def resource_options
+        @resource_options ||= {}
       end
   end
 end
