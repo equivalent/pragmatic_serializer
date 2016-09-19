@@ -5,6 +5,8 @@ module API
     class DummyWorkSerializer
       include PragmaticSerializer::All
 
+      attr_accessor :policy
+
       def main_json
         {
           title: dummy_work.title
@@ -22,7 +24,13 @@ module API
       end
 
       def as_foo_json
-        { bmth: "It Never Ends"}
+        title = if policy && policy.admin?
+                  "The Comedown"
+                else
+                  "It Never Ends"
+                end
+
+        { bmth: title }
       end
     end
   end
@@ -30,7 +38,9 @@ end
 
 RSpec.describe API::V67::DummyWorkSerializer do
   let(:resource) { instance_double(DummyWork, public_uid: 'atreyu123', title: "Halestorm") }
-  subject { described_class.collection([resource]) }
+  let(:policy_object) { double admin?: true }
+  let(:options) { {} }  # no options
+  subject { described_class.collection([resource], **options) }
 
   context 'no pagination' do
     it do
@@ -101,6 +111,18 @@ RSpec.describe API::V67::DummyWorkSerializer do
             { bmth: "It Never Ends"}
           ]
         })
+      end
+
+      context ' passing resource options' do
+        let(:options) { { resource_options: { :'policy=' => policy_object } } }
+
+        it do
+          expect(subject.as_json).to match({
+            dummy_works: [
+              { bmth: "The Comedown"}
+            ]
+          })
+        end
       end
     end
 
