@@ -41,11 +41,64 @@ Or install it yourself as:
 
 ## Usage
 
-```ruby
 
+#### Collections
+
+```ruby
+r1 = Band.first
+r2 = Band.last
+
+class BandPolicy
+  attr_reader :current_user
+
+  def initialize(current_user:)
+    @current_user = current_user
+  end
+
+  def can_view_counters?
+    current_user.admin == true
+  end
+end
+
+class MySerializer
+  include PragmaticSerializer::All
+
+  attr_accessor :policy
+
+  def main_json
+    hash = { title: band.title }
+    hash.margin(view_count: band.view_count) if policy.can_view_counters?
+    hash
+  end
+end
+
+policy = BandPolicy.new(current_user: current_user)
+
+serializer = MySerializer.collection([r1, r2], resource_options: { :"policy=" => policy })
+serializer.as_json
 ```
 
+As regular user:
 
+```json
+{
+  "id":"123",
+  "type":"band",
+  "title":"Bring Me The Horizon"
+}
+```
+
+As admin 
+
+
+```json
+{
+  "id":"123",
+  "type":"band",
+  "title":"Bring Me The Horizon"
+  "view_count": 2001
+}
+```
 
 #### Change ID field
 
