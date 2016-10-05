@@ -40,9 +40,6 @@ module PragmaticSerializer
           resource_object = resource_serializer.new(resource_prefix => resource)
 
           resource_options.each do |method_name, value|
-            puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-            puts method_name
-            puts value
             resource_object.send(method_name, value)
           end
 
