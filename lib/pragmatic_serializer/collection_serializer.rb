@@ -33,11 +33,11 @@ module PragmaticSerializer
     end
 
     private
-      def_delegators :resource_serializer, :resource_prefix, :collection_prefix
+      def_delegators :resource_serializer, :collection_prefix
 
       def collection_serializers
         resources.map do |resource|
-          resource_object = resource_serializer.new(resource_prefix => resource)
+          resource_object = resource_serializer.new(resource)
 
           resource_options.each do |method_name, value|
             resource_object.send(method_name, value)

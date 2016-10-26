@@ -10,7 +10,7 @@ class SerializerWithGJB
   end
 
   # model accessor
-  def document
+  def resource
     # in spec_helper #public_uid is set te be default id field
     OpenStruct.new(public_uid: 'abc123')
   end
@@ -51,7 +51,7 @@ RSpec.describe SerializerWithGJB do
     context 'when id_source returns nil value' do
       before do
         expect(subject)
-          .to receive(:document)
+          .to receive(:resource)
           .at_least(:once)
           .and_return(double(public_uid: nil))
       end
@@ -64,7 +64,7 @@ RSpec.describe SerializerWithGJB do
     context 'when id_source is an integer' do
       before do
         expect(subject)
-          .to receive(:document)
+          .to receive(:resource)
           .at_least(:once)
           .and_return(double(public_uid: 123))
       end

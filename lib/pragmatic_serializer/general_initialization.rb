@@ -1,14 +1,11 @@
 module PragmaticSerializer
   module GeneralInitialization
     def self.included(base)
-      base.send(:attr_reader, base.resource_prefix)
+      base.send(:attr_reader, :resource)
     end
 
-    def initialize(**options)
-      value = options.fetch(prefix) do |x|
-        raise ArgumentError.new("missing keyword: #{x}")
-      end
-      instance_variable_set("@#{prefix}", value)
+    def initialize(resource)
+      @resource = resource
     end
   end
 end

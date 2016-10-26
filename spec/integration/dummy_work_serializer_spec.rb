@@ -7,7 +7,7 @@ module API
 
       def main_json
         {
-          title: dummy_work.title
+          title: resource.title
         }
       end
 
@@ -18,14 +18,14 @@ module API
         #
         #  and you will be able to do `root_path` ...
         #
-        "/api/v66/dummy_works/#{dummy_work.public_uid}"
+        "/api/v66/dummy_works/#{resource.public_uid}"
       end
     end
   end
 end
 
 RSpec.describe API::V66::DummyWorkSerializer do
-  subject { described_class.new(dummy_work: dummy_work) }
+  subject { described_class.new(dummy_work) }
   let(:dummy_work) { instance_double(DummyWork, title: 'Foo Bar', public_uid: 1235) }
 
   it_should_behave_like 'object that can access config'

@@ -9,7 +9,7 @@ module API
 
       def main_json
         {
-          title: dummy_work.title
+          title: resource.title
         }
       end
 
@@ -20,7 +20,7 @@ module API
         #
         #  and you will be able to do `root_path` ...
         #
-        "/api/v67/dummy_works/#{dummy_work.public_uid}"
+        "/api/v67/dummy_works/#{resource.public_uid}"
       end
 
       def as_foo_json

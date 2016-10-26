@@ -15,7 +15,7 @@ module PragmaticSerializer
     protected
 
     def json_id_value
-      send(prefix).send(json_id_source) || raise(IDHasNoValue)
+      resource.send(json_id_source) || raise(IDHasNoValue)
     end
 
     def json_id_source

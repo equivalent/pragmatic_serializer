@@ -6,18 +6,8 @@ class FooBarGISerializer
 end
 
 RSpec.describe FooBarGISerializer do
-  subject { described_class.new(foo_bar_gi: model ) }
+  subject { described_class.new(model) }
   let(:model) { double }
-
-  context 'incorrect keyword initalize' do
-    subject { described_class.new(dummy_foo: model ) }
-
-    describe 'initialization' do
-      it do
-        expect { subject }.to raise_exception(ArgumentError)
-      end
-    end
-  end
 
   context 'correct keyword initalize' do
     describe 'initialization' do
@@ -28,7 +18,7 @@ RSpec.describe FooBarGISerializer do
 
     describe '#foo_bar_gi' do
       it do
-        expect(subject.foo_bar_gi).to eq model
+        expect(subject.resource).to eq model
       end
     end
   end
