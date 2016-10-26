@@ -23,7 +23,7 @@ Also the gem don't extend anything Rails wise (therefore Sinatra can use
 it too), it just provides a generic
 way to build Plain Ruby Object Serializers that you can call `as_json`
 on to produce hash that you can then pass to `render json:
-DocumentSerializer.new(document: Document.last).as_json`
+DocumentSerializer.new(Document.last).as_json`
 
 ## Installation
 
