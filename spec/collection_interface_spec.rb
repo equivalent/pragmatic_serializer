@@ -3,12 +3,17 @@ require 'spec_helper'
 class SerializerWithCollectionInterfaceSerializer
   include PragmaticSerializer::Prefixes
   include PragmaticSerializer::CollectionInterface
+
+  def as_foo_json
+
+  end
 end
 
 RSpec.describe SerializerWithCollectionInterfaceSerializer do
+  let(:resource)  { double("dummy resource", public_uid: "askngalxndra") }
+  let(:resources) { [resource] }
+
   describe '.collection' do
-    let(:resources) { [resource] }
-    let(:resource)  { double(public_uid: "askngalxndra") }
     subject { described_class.collection(resources) }
 
     it do
@@ -28,6 +33,77 @@ RSpec.describe SerializerWithCollectionInterfaceSerializer do
 
       it do
         expect(subject.send(:resource_options)).to eq({ dummy_method: 123 })
+      end
+    end
+  end
+
+  describe '.collection_hash' do
+    let(:collection_serializer_dummy) do
+      instance_double(PragmaticSerializer::CollectionSerializer, as_json: 'stubbed hash')
+    end
+
+    before do
+      expect(described_class)
+        .to receive(:collection)
+        .with(*cs_expected_with)
+        .and_return(collection_serializer_dummy)
+    end
+
+    context 'without passing any extra args' do
+      let(:cs_expected_with) { [resources, resource_options: {}] }
+
+      def trigger
+        described_class.collection_hash(resources)
+      end
+
+      it do
+        expect(collection_serializer_dummy).to receive(:as_json)
+        expect(trigger).to eq 'stubbed hash'
+      end
+    end
+
+    context 'with method' do
+      let(:cs_expected_with) { [resources, resource_options: {}] }
+
+      def trigger
+        described_class.collection_hash(resources, :as_foobar_json)
+      end
+
+      it do
+        expect(collection_serializer_dummy)
+          .to receive(:serialization_method=)
+          .with(:as_foobar_json)
+        expect(collection_serializer_dummy).to receive(:as_json)
+        expect(trigger).to eq 'stubbed hash'
+      end
+    end
+
+    context 'with resource_options' do
+      let(:cs_expected_with) { [resources, resource_options: {foo: :bar}] }
+
+      def trigger
+        described_class.collection_hash(resources, resource_options: {foo: :bar})
+      end
+
+      it do
+        expect(collection_serializer_dummy).to receive(:as_json)
+        expect(trigger).to eq 'stubbed hash'
+      end
+    end
+
+    context 'with resource_options and method' do
+      let(:cs_expected_with) { [resources, resource_options: {foo: :bar}] }
+
+      def trigger
+        described_class.collection_hash(resources, :as_foobar_json, resource_options: {foo: :bar})
+      end
+
+      it do
+        expect(collection_serializer_dummy)
+          .to receive(:serialization_method=)
+          .with(:as_foobar_json)
+        expect(collection_serializer_dummy).to receive(:as_json)
+        expect(trigger).to eq 'stubbed hash'
       end
     end
   end

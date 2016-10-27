@@ -7,6 +7,7 @@ module PragmaticSerializer
       base.send(:include, PragmaticSerializer::GeneralBaseJSON)
       base.send(:include, PragmaticSerializer::GeneralResourceJSON)
       base.send(:include, PragmaticSerializer::CollectionInterface)
+      base.send(:include, PragmaticSerializer::ResourceInterface)
     end
   end
 end

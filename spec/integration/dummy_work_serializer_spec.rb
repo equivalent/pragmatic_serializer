@@ -65,4 +65,16 @@ RSpec.describe API::V66::DummyWorkSerializer do
       })
     end
   end
+
+  describe '.resource_hash' do
+    it do
+      expect(described_class.resource_hash(dummy_work, :as_base_json)).to match({
+        dummy_work: {
+          id: "1235",
+          type: "dummy_work",
+          href: "/api/v66/dummy_works/1235",
+        }
+      })
+    end
+  end
 end

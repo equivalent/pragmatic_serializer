@@ -12,7 +12,9 @@ require "pragmatic_serializer/general_resource_json"
 
 require "pragmatic_serializer/pagination_json"
 require "pragmatic_serializer/collection_serializer"
+
 require "pragmatic_serializer/collection_interface"
+require "pragmatic_serializer/resource_interface"
 
 require "pragmatic_serializer/all"
 
