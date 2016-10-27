@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/Pobble/pragmatic_serializer.svg?branch=master)](https://travis-ci.org/Pobble/pragmatic_serializer)
+![Gitten](http://gittens.r15.railsrumble.com//badge/Pobble/pragmatic_serializer)
+[![Open Thanks](https://thawing-falls-79026.herokuapp.com/images/thanks-1.svg)](https://thawing-falls-79026.herokuapp.com/r/vdygsixm)
 
 # PragmaticSerializer
 
