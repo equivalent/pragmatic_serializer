@@ -2,11 +2,17 @@ module PragmaticSerializer
   module Prefixes
     module ClassMethods
       def collection_prefix
-        name.demodulize.underscore.gsub('_serializer', '').pluralize.to_sym
+        PragmaticSerializer.config.pluralization_inflector.call(resource_base_name).to_sym
       end
 
       def resource_prefix
-        name.demodulize.underscore.gsub('_serializer', '').singularize.to_sym
+        PragmaticSerializer.config.singularization_inflector.call(resource_base_name).to_sym
+      end
+
+      private
+
+      def resource_base_name
+        name.demodulize.underscore.gsub('_serializer', '')
       end
     end
 
