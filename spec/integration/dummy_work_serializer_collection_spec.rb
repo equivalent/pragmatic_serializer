@@ -79,8 +79,8 @@ RSpec.describe API::V67::DummyWorkSerializer do
             ],
             first:  "/api/v67/dummy_works?limit=10&offset=0",
             href:   "/api/v67/dummy_works?limit=10&offset=3",
-            prev:   "/api/v67/dummy_works?limit=10&offset=2",
-            next:   "/api/v67/dummy_works?limit=10&offset=4",
+            prev:   "/api/v67/dummy_works?limit=10&offset=0",
+            next:   "/api/v67/dummy_works?limit=10&offset=13",
             limit:  10,
             offset: 3,
           })
@@ -88,7 +88,7 @@ RSpec.describe API::V67::DummyWorkSerializer do
       end
 
       describe '#as_unprefixed_json' do
-        it do 
+        it do
           expect(subject.as_unprefixed_json).to match([
             {
               id: "atreyu123",
@@ -147,4 +147,3 @@ RSpec.describe API::V67::DummyWorkSerializer do
     end
   end
 end
-

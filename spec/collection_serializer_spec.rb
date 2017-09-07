@@ -81,7 +81,7 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
             offset: 0,
             first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
             prev: nil,
-            next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=1",
+            next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=50",
             href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
           })
         end

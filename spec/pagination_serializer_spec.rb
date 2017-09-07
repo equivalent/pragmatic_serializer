@@ -39,71 +39,37 @@ RSpec.describe PragmaticSerializer::PaginationJSON do
 
     describe '#next' do
       it  do
-        expect(subject.next).to eq("/endpoint?limit=#{limit}&offset=1")
+        expect(subject.next).to eq("/endpoint?limit=13&offset=13")
       end
     end
 
     describe '#href' do
       it  do
-        expect(subject.href).to eq("/endpoint?limit=#{limit}&offset=0")
+        expect(subject.href).to eq("/endpoint?limit=13&offset=0")
       end
     end
   end
 
-  context 'when offset is 1' do
+  context 'when offset is greater than 0' do
+    let(:offset) { 10 }
+    let(:limit) { 5 }
     it_behaves_like 'pagination json that has first element'
 
     describe '#prev' do
       it  do
-        expect(subject.prev).to eq("/endpoint?limit=#{limit}&offset=0")
+        expect(subject.prev).to eq("/endpoint?limit=5&offset=5")
       end
     end
 
     describe '#next' do
       it  do
-        expect(subject.next).to eq("/endpoint?limit=#{limit}&offset=2")
-      end
-
-      context 'when maximum offset is set to 1' do
-        before do
-          subject.maximum_offset = 1
-        end
-
-        it_behaves_like 'pagination json that has first element'
-
-        it do
-          expect(subject.next).to be nil
-        end
+        expect(subject.next).to eq("/endpoint?limit=5&offset=15")
       end
     end
 
     describe '#href' do
       it  do
-        expect(subject.href).to eq("/endpoint?limit=#{limit}&offset=1")
-      end
-    end
-  end
-
-  context 'when offset is 2' do
-    let(:offset) { 2 }
-
-    it_behaves_like 'pagination json that has first element'
-
-    describe '#prev' do
-      it  do
-        expect(subject.prev).to eq("/endpoint?limit=#{limit}&offset=1")
-      end
-    end
-
-    describe '#next' do
-      it  do
-        expect(subject.next).to eq("/endpoint?limit=#{limit}&offset=3")
-      end
-    end
-
-    describe '#href' do
-      it  do
-        expect(subject.href).to eq("/endpoint?limit=#{limit}&offset=2")
+        expect(subject.href).to eq("/endpoint?limit=5&offset=10")
       end
     end
   end
