@@ -1,10 +1,11 @@
 module PragmaticSerializer
   class PaginationJSON
-    attr_reader :limit, :offset, :pagination_evaluator
+    attr_reader :limit, :offset, :total, :pagination_evaluator
 
-    def initialize(limit:, offset:, pagination_evaluator:)
+    def initialize(limit:, offset:, total: nil, pagination_evaluator:)
       @limit = limit
       @offset = offset
+      @total = total
       @pagination_evaluator = pagination_evaluator
     end
 
@@ -24,11 +25,17 @@ module PragmaticSerializer
     end
 
     def next
-      pagination_evaluator.call(limit: limit, offset: offset + limit)
+      show_next = unless total.nil?
+         total > (offset + limit)
+      else
+        true
+      end
+
+      pagination_evaluator.call(limit: limit, offset: offset + limit) if show_next
     end
 
     def prev
-      prev_offset = offset < limit ? 0 : offset - limit        
+      prev_offset = offset < limit ? 0 : offset - limit
       pagination_evaluator.call(limit: limit, offset: prev_offset) if offset > 0
     end
 

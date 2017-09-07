@@ -6,7 +6,7 @@ module PragmaticSerializer
     include PragmaticSerializer::ConfigInterface
 
     attr_writer :limit, :offset, :serialization_method, :resource_options
-    attr_accessor :resources, :resource_serializer, :pagination_evaluator
+    attr_accessor :resources, :total, :resource_serializer, :pagination_evaluator
 
     def serialization_method
       @serialization_method ||= config.default_resource_serialization_method
@@ -51,6 +51,7 @@ module PragmaticSerializer
         @pagination_json ||= PragmaticSerializer::PaginationJSON.new({
           limit: limit,
           offset: offset,
+          total: total,
           pagination_evaluator: pagination_evaluator
         })
       end
