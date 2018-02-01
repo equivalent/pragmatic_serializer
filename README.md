@@ -85,6 +85,10 @@ serializer.as_json
 
 serializer = MySerializer.collection([r1, r2])
 serializer.resource_options.policy = policy
+serializer.resource_options.some_other_serializer_method(123, foo:
+'bar') do
+  puts "hello world"
+end
 serializer.as_json
 ```
 
