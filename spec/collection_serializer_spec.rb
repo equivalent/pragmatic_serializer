@@ -10,7 +10,11 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
       include PragmaticSerializer::Prefixes
       include PragmaticSerializer::GeneralInitialization
 
-      def dummy_method(arg)
+      def dummy_method=(arg)
+      end
+
+      def dummy_method_block(**options, &block)
+        block.call
       end
 
       def as_unprefixed_json
@@ -51,15 +55,43 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
         context 'passing resource_options' do
           before do
             subject.resources = [work1]
-            subject.resource_options = { dummy_method: 123 }
+            subject.resource_options = { :"dummy_method=" => 123 }
           end
 
           it do
             expect_any_instance_of(DummyWorkSerializer)
-              .to receive(:dummy_method)
+              .to receive(:dummy_method=)
               .with(123)
 
             unprefixed_result
+          end
+        end
+
+        context 'setting resource_options on instance' do
+          before do
+            subject.resources = [work1]
+            subject.resource_options.dummy_method = 345
+            @block_called = false
+            subject.resource_options.dummy_method_block(trivium: "in waves") do
+              @block_called = true
+            end
+          end
+
+          it do
+            expect_any_instance_of(DummyWorkSerializer)
+              .to receive(:dummy_method=)
+              .with(345)
+
+            expect_any_instance_of(DummyWorkSerializer)
+              .to receive(:dummy_method_block)
+              .with(trivium: "in waves")
+
+            unprefixed_result
+          end
+
+          it do
+            unprefixed_result
+            expect(@block_called).to be true
           end
         end
       end

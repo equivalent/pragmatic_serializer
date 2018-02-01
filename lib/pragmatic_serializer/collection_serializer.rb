@@ -1,12 +1,38 @@
 module PragmaticSerializer
   class CollectionSerializer
+    class ResourceOptions
+      def _registered_method_pairs
+        @registered_method_pairs ||= []
+      end
+
+      def _call_each_reg_method_pair(obj)
+        _registered_method_pairs.each do |val|
+          obj.public_send(val[0], *val[1], &val[2])
+        end
+      end
+
+      def method_missing(method_name, *args, &block)
+        _registered_method_pairs << [method_name, args, block]
+      end
+    end
+
     OverMaximumLimit = Class.new(StandardError)
 
     extend Forwardable
     include PragmaticSerializer::ConfigInterface
 
-    attr_writer :limit, :offset, :serialization_method, :resource_options
+    attr_writer :limit, :offset, :serialization_method
     attr_accessor :resources, :total, :resource_serializer, :pagination_evaluator
+
+    def resource_options
+      @resource_options ||= ResourceOptions.new
+    end
+
+    def resource_options=(**options)
+      options.each_pair do |method_name, value|
+        resource_options.send(method_name, value)
+      end
+    end
 
     def serialization_method
       @serialization_method ||= config.default_resource_serialization_method
@@ -38,11 +64,7 @@ module PragmaticSerializer
       def collection_serializers
         resources.map do |resource|
           resource_object = resource_serializer.new(resource)
-
-          resource_options.each do |method_name, value|
-            resource_object.send(method_name, value)
-          end
-
+          resource_options._call_each_reg_method_pair(resource_object)
           resource_object
         end
       end
@@ -54,10 +76,6 @@ module PragmaticSerializer
           total: total,
           pagination_evaluator: pagination_evaluator
         })
-      end
-
-      def resource_options
-        @resource_options ||= {}
       end
   end
 end

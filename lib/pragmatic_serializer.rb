@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'ostruct'
 require 'active_support/core_ext/string/inflections'
 
 require "pragmatic_serializer/version"

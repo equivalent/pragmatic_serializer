@@ -29,10 +29,11 @@ RSpec.describe SerializerWithCollectionInterfaceSerializer do
     end
 
     context 'passing resource_options' do
-      subject { described_class.collection(resources, resource_options: { dummy_method: 123 } ) }
+      subject { described_class.collection(resources, resource_options: { :"dummy_method=" => 123 } ) }
 
       it do
-        expect(subject.send(:resource_options)).to eq({ dummy_method: 123 })
+        expect(subject.resource_options._registered_method_pairs)
+          .to eq([[:"dummy_method=", [123], nil]])
       end
     end
   end
