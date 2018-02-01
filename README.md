@@ -137,6 +137,24 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pragmatic_serializer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+## Examples
+
+#### paginated list
+
+```ruby
+
+paginated_comments = @comments.limit(limit).offset(offset)
+
+serializer = CommentSerializer.collection(paginated_comments)
+serializer.limit = limit
+serializer.offset = offset
+serializer.total = @comments.size
+# serializer.resource_options.include_work = true
+serializer.pagination_evaluator = ->(limit:, offset:) {
+  comments_path(limit: limit, offset: offset)
+}
+serializer.as_json
+```
 
 ## License
 
