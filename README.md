@@ -79,6 +79,13 @@ policy = BandPolicy.new(current_user: current_user)
 
 serializer = MySerializer.collection([r1, r2], resource_options: { :"policy=" => policy })
 serializer.as_json
+
+
+# OR
+
+serializer = MySerializer.collection([r1, r2])
+serializer.resource_options.policy = policy
+serializer.as_json
 ```
 
 As regular user:
