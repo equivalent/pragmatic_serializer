@@ -9,9 +9,10 @@ RSpec.describe PragmaticSerializer::PaginationJSON do
     end
   end
 
-  subject { described_class.new(limit: limit, offset: offset, pagination_evaluator: pagination_evaluator) }
+  subject { described_class.new(limit: limit, offset: offset, pagination_evaluator: pagination_evaluator, total: total) }
   let(:limit)  { 13 }
   let(:offset) { 1 }
+  let(:total) { 100 }
   let(:pagination_evaluator) { ->(limit:, offset:) { "/endpoint?limit=#{limit}&offset=#{offset}" } }
 
   describe '#limit' do
@@ -83,6 +84,7 @@ RSpec.describe PragmaticSerializer::PaginationJSON do
         first: subject.first,
         next: subject.next,
         prev: subject.prev,
+        total: total
       })
     end
   end

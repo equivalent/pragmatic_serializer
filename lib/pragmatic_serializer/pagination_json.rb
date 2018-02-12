@@ -10,7 +10,7 @@ module PragmaticSerializer
     end
 
     def as_json
-      {
+      h = {
         limit: limit,
         offset: offset,
         href: href,
@@ -18,6 +18,8 @@ module PragmaticSerializer
         next: self.next,
         prev: prev,
       }
+      h.merge!(total: total) if total
+      h
     end
 
     def first
