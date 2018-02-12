@@ -117,6 +117,64 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
             href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
           })
         end
+
+        context 'when total' do
+          before do
+            subject.total = 120
+          end
+
+          it do
+            expect(prefixed_result).to match({
+              dummy_works: [
+                be_kind_of(Hash),
+                be_kind_of(Hash)
+              ],
+              limit: subject.limit,
+              offset: 0,
+              first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+              prev: nil,
+              next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=50",
+              href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+              total: 120,
+            })
+          end
+
+          context 'when include_resources_json == false' do
+            before { subject.include_resources_json = false }
+
+            it 'should generate just pagination total' do
+              expect(prefixed_result).to match({
+                limit: subject.limit,
+                offset: 0,
+                first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+                prev: nil,
+                next: "/api/v7/dummy_works?limit=#{subject.limit}&offset=50",
+                href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+                total: 120,
+              })
+            end
+          end
+        end
+
+        context 'when offset & limit is over total' do
+          before { subject.total = 49 }
+
+          it do
+            expect(prefixed_result).to match({
+              dummy_works: [
+                be_kind_of(Hash),
+                be_kind_of(Hash)
+              ],
+              limit: subject.limit,
+              offset: 0,
+              first: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+              prev: nil,
+              next: nil,
+              href: "/api/v7/dummy_works?limit=#{subject.limit}&offset=0",
+              total: 49,
+            })
+          end
+        end
       end
 
       describe '#as_unprefixed_json' do

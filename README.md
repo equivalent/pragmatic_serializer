@@ -149,7 +149,8 @@ serializer = CommentSerializer.collection(paginated_comments)
 serializer.limit = limit
 serializer.offset = offset
 serializer.total = @comments.size
-# serializer.resource_options.include_work = true
+# serializer.resource_options.include_work = true         # to pass more options to individual resource serializer
+# serializer.include_resources_json = false               # to skip rendering resources json array
 serializer.pagination_evaluator = ->(limit:, offset:) {
   comments_path(limit: limit, offset: offset)
 }

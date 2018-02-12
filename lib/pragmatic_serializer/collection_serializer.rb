@@ -21,7 +21,7 @@ module PragmaticSerializer
     extend Forwardable
     include PragmaticSerializer::ConfigInterface
 
-    attr_writer :limit, :offset, :serialization_method
+    attr_writer :limit, :offset, :serialization_method, :include_resources_json
     attr_accessor :resources, :total, :resource_serializer, :pagination_evaluator
 
     def resource_options
@@ -48,8 +48,14 @@ module PragmaticSerializer
       @offset ||= config.default_offset
     end
 
+    def include_resources_json
+      return @include_resources_json unless @include_resources_json.nil?
+      @include_resources_json ||= true
+    end
+
     def as_json
-      hash = { collection_prefix => as_unprefixed_json }
+      hash = {}
+      hash.merge!({ collection_prefix => as_unprefixed_json }) if include_resources_json
       hash.merge!(pagination_json.as_json) if pagination_evaluator
       hash
     end
