@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe PragmaticSerializer::CollectionSerializer do
+  module CustomSerializerWrapper
+    def self.call
+      yield
+      return true
+    end
+  end
+
   subject { described_class.new }
 
   it_should_behave_like 'object that can access config'
@@ -50,6 +57,13 @@ RSpec.describe PragmaticSerializer::CollectionSerializer do
             be_kind_of(Hash),
             be_kind_of(Hash)
           ])
+        end
+
+        context 'passing custom' do
+          it do
+            subject.resource_serializer_wrapper = CustomSerializerWrapper
+            expect(unprefixed_result).to match([true, true])
+          end
         end
 
         context 'passing resource_options' do

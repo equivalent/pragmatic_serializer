@@ -64,13 +64,15 @@ module PragmaticSerializer
     def as_unprefixed_json
       collection_serializers
         .map do |rs|
-          resource_serializer_wrapper.call(rs.send(serialization_method))
+          resource_serializer_wrapper.call do
+            rs.send(serialization_method)
+          end
         end
         .compact
     end
 
     def resource_serializer_wrapper
-      @resource_serializer_wrapper ||= ->(x) {x}
+      @resource_serializer_wrapper ||= PragmaticSerializer::ResourceSerializerWrapper
     end
 
     private

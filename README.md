@@ -142,20 +142,34 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 #### paginated list
 
 ```ruby
-
 paginated_comments = @comments.limit(limit).offset(offset)
 
 serializer = CommentSerializer.collection(paginated_comments)
 serializer.limit = limit
 serializer.offset = offset
 serializer.total = @comments.size
-# serializer.resource_serializer_wrapper = ->(x) { begin x; rescue ActiveRecor::Base; end}
 # serializer.resource_options.include_work = true         # to pass more options to individual resource serializer
 # serializer.include_resources_json = false               # to skip rendering resources json array
 serializer.pagination_evaluator = ->(limit:, offset:) {
   comments_path(limit: limit, offset: offset)
 }
 serializer.as_json
+```
+
+#### Skip missing records in serializer
+
+```ruby
+module CustomResourceSerializerWrapper
+  def self.call
+    begin
+      yield
+    rescue ActiveRecord::Base
+    end
+  end
+end
+
+serializer.resource_serializer_wrapper = CustomResourceSerializerWrapper
+
 ```
 
 ## License

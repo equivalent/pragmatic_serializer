@@ -3,6 +3,7 @@ require 'ostruct'
 require 'active_support/core_ext/string/inflections'
 
 require "pragmatic_serializer/version"
+require "pragmatic_serializer/resource_serializer_wrapper"
 require "pragmatic_serializer/configuration"
 require "pragmatic_serializer/config_interface"
 
