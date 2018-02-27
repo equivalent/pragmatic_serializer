@@ -163,7 +163,7 @@ module CustomResourceSerializerWrapper
   def self.call
     begin
       yield
-    rescue ActiveRecord::Base
+    rescue ActiveRecord::RecordNotFound
     end
   end
 end
