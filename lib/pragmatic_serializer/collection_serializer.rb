@@ -21,7 +21,8 @@ module PragmaticSerializer
     extend Forwardable
     include PragmaticSerializer::ConfigInterface
 
-    attr_writer :limit, :offset, :serialization_method, :include_resources_json
+    attr_writer :limit, :offset, :serialization_method,
+      :include_resources_json, :resource_serializer_wrapper
     attr_accessor :resources, :total, :resource_serializer, :pagination_evaluator
 
     def resource_options
@@ -61,7 +62,15 @@ module PragmaticSerializer
     end
 
     def as_unprefixed_json
-      collection_serializers.map { |rs| rs.send(serialization_method) }
+      collection_serializers
+        .map do |rs|
+          resource_serializer_wrapper.call(rs.send(serialization_method))
+        end
+        .compact
+    end
+
+    def resource_serializer_wrapper
+      @resource_serializer_wrapper ||= ->(x) {x}
     end
 
     private

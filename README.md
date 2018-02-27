@@ -149,6 +149,7 @@ serializer = CommentSerializer.collection(paginated_comments)
 serializer.limit = limit
 serializer.offset = offset
 serializer.total = @comments.size
+# serializer.resource_serializer_wrapper = ->(x) { begin x; rescue ActiveRecor::Base; end}
 # serializer.resource_options.include_work = true         # to pass more options to individual resource serializer
 # serializer.include_resources_json = false               # to skip rendering resources json array
 serializer.pagination_evaluator = ->(limit:, offset:) {
